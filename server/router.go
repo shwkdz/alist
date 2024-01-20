@@ -60,7 +60,7 @@ func Init(e *gin.Engine) {
 	api.GET("/auth/get_sso_id", handles.SSOLoginCallback)
 	api.GET("/auth/sso_get_token", handles.SSOLoginCallback)
 
-	//webauthn
+	// webauthn
 	webauthn.GET("/webauthn_begin_registration", handles.BeginAuthnRegistration)
 	webauthn.POST("/webauthn_finish_registration", handles.FinishAuthnRegistration)
 	webauthn.GET("/webauthn_begin_login", handles.BeginAuthnLogin)
@@ -143,6 +143,9 @@ func _fs(g *gin.RouterGroup) {
 	g.Any("/list", handles.FsList)
 	g.Any("/search", middlewares.SearchIndex, handles.Search)
 	g.Any("/get", handles.FsGet)
+	g.Any("/archive_list", handles.FsArchiveList)
+	g.Any("/archive_get", handles.FsArchiveGet)
+	g.Any("/archive_proxy", handles.FsArchiveProxy)
 	g.Any("/other", handles.FsOther)
 	g.Any("/dirs", handles.FsDirs)
 	g.POST("/mkdir", handles.FsMkdir)
@@ -157,14 +160,14 @@ func _fs(g *gin.RouterGroup) {
 	g.PUT("/put", middlewares.FsUp, handles.FsStream)
 	g.PUT("/form", middlewares.FsUp, handles.FsForm)
 	g.POST("/link", middlewares.AuthAdmin, handles.Link)
-	//g.POST("/add_aria2", handles.AddOfflineDownload)
-	//g.POST("/add_qbit", handles.AddQbittorrent)
+	// g.POST("/add_aria2", handles.AddOfflineDownload)
+	// g.POST("/add_qbit", handles.AddQbittorrent)
 	g.POST("/add_offline_download", handles.AddOfflineDownload)
 }
 
 func Cors(r *gin.Engine) {
 	config := cors.DefaultConfig()
-	//config.AllowAllOrigins = true
+	// config.AllowAllOrigins = true
 	config.AllowOrigins = conf.Conf.Cors.AllowOrigins
 	config.AllowHeaders = conf.Conf.Cors.AllowHeaders
 	config.AllowMethods = conf.Conf.Cors.AllowMethods
